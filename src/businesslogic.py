@@ -5,7 +5,7 @@ class BusinesssLogic():
     
     def __init__(self):
         try:
-            self.con = sqlite3.connect("/Users/philipp/development/projekte/api/personenliste.db")
+            self.con = sqlite3.connect("./personenliste.db")
             self.cur = self.con.cursor()
             print("connected")
         except Exception as e:
@@ -13,12 +13,12 @@ class BusinesssLogic():
 
     def get_item_by_id(self, id):
         try:
-            command = f"SELECT * FROM Personen where id == {id}"
-            self.execute_command(command)
+            command = "SELECT * FROM Personen where id == ?"
+            self.execute_command_tuple(command, (id,))
             p = self.cur.fetchone()
             return p
         except Exception as e:
-            print("Error")
+            print("Error getting item by id" + str(e))
 
     def get_all_entries(self):
 
@@ -37,8 +37,8 @@ class BusinesssLogic():
     def insert_into(self, vorname, nachname):
 
         try:
-            command = f"INSERT INTO Personen (Vorname, Nachname) VALUES ('{vorname}','{nachname}');"
-            self.execute_command(command)
+            command = "INSERT INTO Personen (Vorname, Nachname) VALUES (?,?)"
+            self.execute_command_tuple(command, (vorname,nachname))
             self.commit_changes()
             return f"Added Person: {vorname} {nachname}"
         except Exception as e:
@@ -47,6 +47,13 @@ class BusinesssLogic():
     def execute_command(self,command):
         self.cur.execute(command)
     
+    def execute_command_tuple(self,command, tuple):
+        self.cur.execute(command, tuple)
+    
     def commit_changes(self):
         self.con.commit()
 
+
+t = BusinesssLogic()
+
+print(t.insert_into("Philipp", "Nüßlein"))
