@@ -44,6 +44,15 @@ class BusinesssLogic():
         except Exception as e:
             return( "Adding person error" + str(e.args))
 
+    def delete_by_id(self, id):
+        try:
+            command = "DELETE FROM Personen WHERE id == ?"
+            self.execute_command_tuple(command, (id,))
+            self.commit_changes()
+            return f"Deleted person with id {id}"
+        except Exception as e:
+            return ("Delete error" + str(e))
+
     def execute_command(self,command):
         self.cur.execute(command)
     
@@ -56,4 +65,5 @@ class BusinesssLogic():
 
 t = BusinesssLogic()
 
-print(t.insert_into("Philipp", "Nüßlein"))
+print(t.delete_by_id(1))
+print(t.get_all_entries())
