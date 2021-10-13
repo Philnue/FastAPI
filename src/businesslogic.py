@@ -5,7 +5,7 @@ class BusinesssLogic():
     
     def __init__(self):
         try:
-            self.con = sqlite3.connect("./personenliste.db")
+            self.con = sqlite3.connect("../personenliste.db")
             self.cur = self.con.cursor()
             print("connected")
         except Exception as e:
@@ -55,6 +55,9 @@ class BusinesssLogic():
 
     def execute_command(self,command):
         self.cur.execute(command)
+
+    def execute_command_test(self,command):
+        self.cur.execute(command)
     
     def execute_command_tuple(self,command, tuple):
         self.cur.execute(command, tuple)
@@ -62,8 +65,3 @@ class BusinesssLogic():
     def commit_changes(self):
         self.con.commit()
 
-
-t = BusinesssLogic()
-
-print(t.delete_by_id(1))
-print(t.get_all_entries())
